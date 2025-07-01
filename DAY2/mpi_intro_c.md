@@ -461,7 +461,7 @@ int main(int argc, char** argv) {
 
 #### Gather
 
-```cpp
+```c
 int MPI_Gather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
 ```
   - `sendbuf`: The starting address of the send buffer (the data being sent from each process).
@@ -629,9 +629,10 @@ It is used to define a datatype for regularly spaced blocks of data. This is use
 
 here is the "signature":
 
-``cpp
+```c
 int MPI_Type_vector(int count, int blocklength, int stride, MPI_Datatype oldtype, MPI_Datatype *newtype);
-``
+```
+
  - `count`: Number of blocks.
  - `blocklength`: Number of elements in each block.
  - `stride`: Number of elements between the start of each block.
