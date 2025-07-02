@@ -7,11 +7,6 @@
 #include <mkl_cblas.h>
 #endif
 
-#ifdef CUBLAS
-#include <cublas.h>
-#include <cuda_runtime.h>
-#include "cublas_v2.h"
-
 
 // error handling MACRO from https://gist.github.com/jefflarkin/5390993
 #define cudaCheckError() {                                          \
@@ -34,7 +29,6 @@
       float t;						\
       cudaEventElapsedTime(&t, start, stop); cudaEventDestroy(start); cudaEventDestroy(stop); t/1000; })
 
-#endif
 
 #define MPITime(x) ({	\
   double t=myseconds(); \
@@ -89,43 +83,6 @@ int main(int argc,char* argv[]) {
   int* displacement = (int*)  malloc(procs*sizeof(int));
   int* recvcount = (int*)  malloc(procs*sizeof(int));
 
-#ifdef CUBLAS
-  cudaError_t error;
-  cublasHandle_t handle;
-
-  double* A_device;
-  double* buffer_device;
-  double* C_device;
-
-  //process binding
-  int deviceCount;
-  cudaGetDeviceCount (&deviceCount) ;
-  cudaSetDevice(rank%deviceCount);
-  cudaCheckError();
-
-  int device;
-  cudaGetDevice(&device);
-  printf("Cuda device %d/%d, rank %d\n",device,deviceCount,rank);
-
-  cublasCreate(&handle);
-  cudaCheckError();
-
-  cudaMalloc((void**)&A_device, N * n_fix * sizeof(double));
-  cudaCheckError();
-
-  cudaMalloc((void**)&buffer_device, N * n_buffer * sizeof(double));
-  cudaCheckError();
-
-  cudaMalloc((void**)&C_device, N* n_fix * sizeof(double));
-  cudaCheckError();
-
-  cudaMemset((void*)C_device, 0, N * n_fix * sizeof(double));
-  cudaCheckError();
-
-  cudaMemcpy(A_device, A, N * n_fix * sizeof(double),cudaMemcpyHostToDevice);
-  cudaCheckError();
-
-#endif
   for(int p=0;p<procs;++p){
 
     //numero di colonne all'iterazione corrente
@@ -140,27 +97,14 @@ int main(int argc,char* argv[]) {
     MPI_Allgatherv( square , n_col*n_fix, MPI_DOUBLE,
                     buffer ,recvcount,displacement,MPI_DOUBLE,MPI_COMM_WORLD);
 			);    
-    
-#ifdef CUBLAS
-    copy_time+=MPITime(cudaMemcpy(buffer_device, buffer, N * n_col * sizeof(double),cudaMemcpyHostToDevice););
-#endif
-    
+        
 #ifdef DGEMM
     compute_time += MPITime( cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans , n_fix , n_col , N , 1.0 , A , N , buffer , n_col , 0.0 ,  C+offset, N ); );
-#elif CUBLAS
-    double alpha = 1.0;
-    double beta = 0.0;
-
-    compute_time = TimeIt(cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, n_col,  n_fix, N , &alpha, buffer_device, n_col, A_device, N, &beta, C_device+offset, N));
 
 #else
     compute_time = MPITime( mat_mul(A, buffer, C+offset, n_col, n_fix,N); );
 #endif
   }
-
-  #ifdef CUBLAS
-  copy_time+=TimeIt(cudaMemcpy(C, C_device, n_fix * N *  sizeof(double),cudaMemcpyDeviceToHost););
-  #endif
 
   if(rank==0)
     printf("%d %f %f %f\n",procs,compute_time,comm_time,copy_time);

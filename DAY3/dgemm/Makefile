@@ -6,7 +6,7 @@ CC = mpiicc
 INCLUDES = -I/opt/ohpc/pub/thor/software/imkl/2023.2.0/mkl/2023.2.0/include
 LIBS = -L/opt/ohpc/pub/thor/software/imkl/2023.2.0/mkl/2023.2.0/lib/intel64 -lmkl_intel_ilp64 -lmkl_intel_thread -lmkl_core -qopenmp -lm
 
-all: matrix test dgemm cuda
+all: matrix test dgemm 
 matrix: auxiliary.o
 	${CC} main.c auxiliary.o  ${CFLAGS} ${INCLUDES} -o ${@}.x  ${LIBS}
 
