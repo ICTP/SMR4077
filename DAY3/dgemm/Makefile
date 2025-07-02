@@ -3,8 +3,8 @@ SHELL = /bin/sh
 
 CFLAGS = -Wall -O3 -Wextra
 CC = mpiicc
-INCLUDES = 
-LIBS = -L${INTEL_ONEAPI_MKL_LIB} -lmkl_intel_ilp64 -lmkl_intel_thread -lmkl_core -qopenmp -lm
+INCLUDES = -I/opt/ohpc/pub/thor/software/imkl/2023.2.0/mkl/2023.2.0/include
+LIBS = -L/opt/ohpc/pub/thor/software/imkl/2023.2.0/mkl/2023.2.0/lib/intel64 -lmkl_intel_ilp64 -lmkl_intel_thread -lmkl_core -qopenmp -lm
 
 all: matrix test dgemm cuda
 matrix: auxiliary.o
