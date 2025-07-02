@@ -1,3 +1,11 @@
+### Note: 
+
+to compile the code with `openmp`, use the `-fopenmp` (if you are using gcc), like
+
+```bash
+gcc -fopenmp hello_openmp.c -o hello_openmp.x
+```
+
 ### Exercise 0:
 
 make sure you understand the examples on the slides, run them to check that they work;
