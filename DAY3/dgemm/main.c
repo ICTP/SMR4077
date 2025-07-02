@@ -102,7 +102,7 @@ int main(int argc,char* argv[]) {
     compute_time += MPITime( cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans , n_fix , n_col , N , 1.0 , A , N , buffer , n_col , 0.0 ,  C+offset, N ); );
 
 #else
-    compute_time = MPITime( mat_mul(A, buffer, C+offset, n_col, n_fix,N); );
+    compute_time += MPITime( mat_mul(A, buffer, C+offset, n_col, n_fix,N); );
 #endif
   }
 
