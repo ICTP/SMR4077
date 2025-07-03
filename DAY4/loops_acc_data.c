@@ -5,7 +5,7 @@
 int main()
 {
 
-        int n=1000000000;
+        int n=100000;
 
         int * a = ( int * )  malloc( n * sizeof(int) );
         int * b = ( int * )  malloc( n * sizeof(int) );
