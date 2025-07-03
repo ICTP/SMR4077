@@ -1,6 +1,6 @@
 # Machine Leanrt Interatomic potentials
 
-in this tutorial we will use three codes, [janus-core](https::/github.com/stfc/janus-core), [lammps with mliap](https://www.lammps.org/) and lammps with [symmetryx](https://github.com/wcwitt/symmetrix).
+in this tutorial we will use three codes, [janus-core](https://github.com/stfc/janus-core), [lammps with mliap](https://www.lammps.org/) and lammps with [symmetryx](https://github.com/wcwitt/symmetrix).
 
 The main aim is to deploy these code on an HPC system, Leonardo at cineca and run simple tasks with them.
 
