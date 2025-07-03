@@ -21,7 +21,7 @@ int main(int argc, char* argv[]){
             return 1;
     }
 
-    long int n_rects=atoi(argv[1]);
+    long long int n_rects=atoll(argv[1]);
     
     double base=1./n_rects;
     double pi=0;
@@ -29,7 +29,7 @@ int main(int argc, char* argv[]){
     double t_in=seconds();
 //Put your pragmas here
     for( long int i =0; i<n_rects; i++){
-       pi+=1/(1.+base*(1.*i-0.5)*base*(1.*i-0.5));
+       pi+=1./(1.+base*(1.*i-0.5)*base*(1.*i-0.5));
     }
     pi*=4*base;
     double t_end=seconds();
