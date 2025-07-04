@@ -10,20 +10,22 @@
 
 source ~/.bashrc
 
-module load openmpi/4.1.6--nvhpc--24.3 gcc/12.2.0
+
+module load openmpi/4.1.6--nvhpc--23.11 cuda/12.1 gcc/12.2.0
 
 
-export LIBRARY_PATH=$CUDA_HOME/lib64/stubs:$LIBRARY_PATH
-export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$CUDA_HOME/lib64/stubs:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=../lammps-symmetrix-gpu-121/lib:../lammps-symmetrix-gpu-121/lib64:$LD_LIBRARY_PATH
 
-
-export LD_LIBRARY_PATH=../lammps-symmetrix-gpu/lib:../lammps-symmetrix-gpu/lib64:$LD_LIBRARY_PATH
-
-export OMP_NUM_THREADS=1
 lmp="xxx/bin/lmp"
 
-ldd $lmp
+
+t=$SLURM_CPUS_PER_TASK
+export OMP_NUM_THREADS=$t
 export OMP_PROC_BIND=spread 
 export OMP_PLACES=threads
+export SRUN_CPUS_PER_TASK=$t
 
-srun $lmp -k on t 1 g 1 -sf kk -pk kokkos newton on neigh half   -in in.water -log water.gpu.1
+N=1
+set -x 
+srun $lmp -k on t $t g $N -sf kk -pk kokkos newton on neigh half   -in in.water -log log.G-${N}_T-${t}
+
