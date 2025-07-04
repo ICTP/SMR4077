@@ -3,7 +3,7 @@ source ~/.bashrc
 module load openmpi/4.1.6--nvhpc--24.3 fftw/3.3.10--openmpi--4.1.6--nvhpc--24.3  nvhpc/24.3   gcc/12.2.0
 
 micromamba activate janus 
-python3 -m pip install Cython
+python3 -m pip install Cython==3.1.1
 
 base=$PWD
 
