@@ -1,0 +1,27 @@
+#
+units           metal
+boundary        p p p
+atom_style      atomic
+
+atom_modify map yes
+
+newton on
+
+
+read_data nacl.data
+
+pair_style  mliap unified ./mace-mpa-0-medium.model-mliap_lammps.pt 0
+pair_coeff * * Cl Na
+
+variable dt equal 0.001
+variable TDAMP equal 0.5
+
+velocity        all create 600.0 2023
+fix             1 all nvt temp 600.0 600.0 ${TDAMP} 
+timestep        ${dt}
+thermo_style    custom step cpu pe ke etotal temp press vol
+thermo          1000
+
+run 2000
+
+
