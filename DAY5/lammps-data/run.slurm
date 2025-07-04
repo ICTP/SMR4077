@@ -21,7 +21,7 @@ module list
 
 export LD_LIBRARY_PATH=$HOME/micromamba/envs/$m/lib/python3.12/site-packages/cuequivariance_ops/lib/:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$HOME/micromamba/envs/$m/lib/python3.12/site-packages/nvidia/cuda_nvrtc/lib/:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$HOME/mace/lammps-mace/lib64/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=xxx/lammps-mace/lib64/:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$HOME/micromamba/envs/$m/lib/:$LD_LIBRARY_PATH
 
 #mace_create_lammps_model --format mliap --dtype float64 --head r2scan ../models/zif8-medium-matpes-v7.model 
