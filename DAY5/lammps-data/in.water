@@ -1,0 +1,42 @@
+#
+units           metal
+boundary        p p p
+atom_style      atomic
+
+atom_modify map yes sort 0 0 
+#atom_modify map hash sort 100 2.0
+
+
+
+neighbor        4.0 bin
+#neigh_modify    every 10 delay 0 check no
+read_data H2O-64.data
+#replicate 1 1 8
+#replicate 4 4 4
+mass     1      1.0079999997406976 # H
+mass     2      15.998999995884349 # O
+#mass     3      14.006999996396779 # N
+#mass     4      65.379999983181364 # Zn
+
+
+pair_style symmetrix/mace 
+pair_coeff * *  ./mace-mpa-0-medium-1-8.json H O 
+
+variable dt equal 0.001
+variable TDAMP equal 0.5
+#variable PDAMP equal 0.5
+#variable TIME equal step*dt # unit: ps
+#variable VOL equal vol
+#variable PRESS equal press
+#variable TEMP equal temp
+
+velocity        all create 300.0 2023
+fix             1 all nvt temp 300.0 300.0 ${TDAMP} 
+timestep        ${dt}
+thermo_style    custom step cpu pe ke etotal temp press vol
+thermo          1000
+#dump            1 all custom 1000 nvt_0.dump id type x y z
+
+run 5000
+
+
