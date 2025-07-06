@@ -1,0 +1,63 @@
+Loading cineca-ai/4.1.1
+  Loading requirement: cuda/12.1 nccl/2.19.1-1--gcc--12.2.0-cuda-12.1
+    cudnn/8.9.7.29-12--gcc--12.2.0-cuda-12.1 gcc/12.2.0
+    openmpi/4.1.6--gcc--12.2.0 bzip2/1.0.8-gp5wcz5 libmd/1.0.4-wja3f5q
+    libbsd/0.11.7-cgxjopl expat/2.5.0-bptl3xw ncurses/6.4-asx3jea
+    readline/8.2-nyw6mp6 gdbm/1.23-fs6otck libiconv/1.17-d7yvx2s
+    xz/5.4.1-hubmwr5 zlib-ng/2.1.4-6htiapk libxml2/2.10.3-5eeeokp
+    pigz/2.7-bopr5vp zstd/1.5.5-gawytfl tar/1.34-amqus5s gettext/0.22.3-2g7elif
+    libffi/3.4.4-6r7brdq libxcrypt/4.4.35-ss2rzin sqlite/3.43.2
+    util-linux-uuid/2.38.1-jkdi7kv python/3.11.6--gcc--8.5.0 cmake/3.27.7
+    openjdk/11.0.20.1_1
+Node allocated lrdn3271
+Requested 1 nodes
+Requested 1 tasks in total
+Requested 1 task per node
+
+Requested 4 gpus per node
+INFO:torch.distributed.launcher.api:Starting elastic_operator with launch configs:
+  entrypoint       : main.py
+  min_nodes        : 1
+  max_nodes        : 1
+  nproc_per_node   : 4
+  run_id           : none
+  rdzv_backend     : static
+  rdzv_endpoint    : localhost:12345
+  rdzv_configs     : {'rank': 0, 'timeout': 900}
+  max_restarts     : 0
+  monitor_interval : 5
+  log_dir          : None
+  metrics_cfg      : {}
+
+INFO:torch.distributed.elastic.agent.server.local_elastic_agent:log directory set to: /tmp/torchelastic_yw_lol61/none_7ap56hyz
+INFO:torch.distributed.elastic.agent.server.api:[default] starting workers for entrypoint: python
+INFO:torch.distributed.elastic.agent.server.api:[default] Rendezvous'ing worker group
+INFO:torch.distributed.elastic.agent.server.api:[default] Rendezvous complete for workers. Result:
+  restart_count=0
+  master_addr=localhost
+  master_port=12345
+  group_rank=0
+  group_world_size=1
+  local_ranks=[0, 1, 2, 3]
+  role_ranks=[0, 1, 2, 3]
+  global_ranks=[0, 1, 2, 3]
+  role_world_sizes=[4, 4, 4, 4]
+  global_world_sizes=[4, 4, 4, 4]
+
+INFO:torch.distributed.elastic.agent.server.api:[default] Starting worker group
+INFO:torch.distributed.elastic.agent.server.local_elastic_agent:Environment variable 'TORCHELASTIC_ENABLE_FILE_TIMER' not found. Do not start FileTimerServer.
+INFO:torch.distributed.elastic.multiprocessing:Setting worker0 reply file to: /tmp/torchelastic_yw_lol61/none_7ap56hyz/attempt_0/0/error.json
+INFO:torch.distributed.elastic.multiprocessing:Setting worker1 reply file to: /tmp/torchelastic_yw_lol61/none_7ap56hyz/attempt_0/1/error.json
+INFO:torch.distributed.elastic.multiprocessing:Setting worker2 reply file to: /tmp/torchelastic_yw_lol61/none_7ap56hyz/attempt_0/2/error.json
+INFO:torch.distributed.elastic.multiprocessing:Setting worker3 reply file to: /tmp/torchelastic_yw_lol61/none_7ap56hyz/attempt_0/3/error.json
+Hello from rank 0
+
+Hello from rank 1
+
+Hello from rank 2
+
+Hello from rank 3
+
+INFO:torch.distributed.elastic.agent.server.api:[default] worker group successfully finished. Waiting 300 seconds for other agents to finish.
+INFO:torch.distributed.elastic.agent.server.api:Local worker group finished (WorkerState.SUCCEEDED). Waiting 300 seconds for other agents to finish
+INFO:torch.distributed.elastic.agent.server.api:Done waiting for other agents. Elapsed: 0.0001494884490966797 seconds
