@@ -1,3 +1,7 @@
 .DS_Store
 *.o
 *.mod
+DAY8/ML4HPC/taxi/data/
+DAY8/ML4HPC/higgs/data/
+DAY8/ML4HPC/weather/data/
+
