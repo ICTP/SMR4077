@@ -1,25 +1,19 @@
 # Jupyter notebook
 
-## Setup
+Spawn a jupyter notebook on **Leonardo cluster** just executing the job file `get_notebook.sh`.
 
-Locally:
-
-```
-$ python -m venv pytorch-intro
-$ source pytorch-intro/bin/activate
-$ pip install xxxx matplotlib jupyter lab
+```bash
+$  sbatch -A tra25_ictp_rom get_notebook.sh
 ```
 
-Leonardo cluster:
+And then follow the instruction on the file `connection_instruction.txt`:
+
+```bash 
+Run on you laptop: ssh -L 12345:10.8.0.201:12345 -N a08tra40@login.leonardo.cineca.it Run on you laptop: ssh -L 12345:10.8.0.201:12345 -N a08tra40@login.leonardo.cineca.it -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+Open on you browser: http://127.0.0.1:12345
+Pls. do not closet the terminal just opened!
 ```
 
-```
-
-Colab:
-
-```
-
-```
 ## Content
 
 ### `00-pytorch.ipynb`
