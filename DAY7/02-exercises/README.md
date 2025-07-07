@@ -29,3 +29,7 @@ You will implement and parallelize the training of a model using the **data para
 ## Multi-Node
 
 In this section, you'll take the multi-GPU code you developed earlier and **scale it to run across multiple nodes** in a distributed environment.
+
+## Distributed Data Parallel
+
+This folder contains the parallelized version of the code originally written for training a model on a single GPU.
