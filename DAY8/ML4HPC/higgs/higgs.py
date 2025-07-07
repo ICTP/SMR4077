@@ -205,7 +205,7 @@ def main():
     y_valid = y_valid.persist()
     y_preds = y_preds.persist()
     y_preds_custom = y_preds_custom.persist()
-
+    # By rounding and converting to int, <0.5 becomes 0, >0.5 becomes 1 
     y_valid_label = y_valid.round().astype(int)
     y_preds_label = y_preds.round().astype(int)
     y_preds_custom_label = y_preds_custom.round().astype(int)
@@ -225,6 +225,7 @@ def main():
     y_valid_c = y_valid.compute()
     y_preds_c = y_preds.compute()
     y_preds_custom_c = y_preds_custom.compute()
+    # By rounding and converting to int, <0.5 becomes 0, >0.5 becomes 1 
     y_valid_c_label = y_valid_c.round().astype(int)
     y_preds_c_label = y_preds_c.round().astype(int)
     y_preds_custom_c_label = y_preds_custom_c.round().astype(int)    
