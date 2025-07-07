@@ -1,4 +1,4 @@
-from data import get_data
+from data import get_dataloader
 from model import MLP,evaluate
 from time import time
 import torch

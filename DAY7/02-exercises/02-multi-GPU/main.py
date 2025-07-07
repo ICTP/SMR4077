@@ -96,5 +96,5 @@ for epoch in range(num_epochs):
     # This will allow rank 0 to compute and report the overall test accuracy.
 
 
-    if rank==0
+    if rank==0:
         print(f'Epoch {epoch}, Accuracy {correct/total}, Walltime per epoch: {walltime:.4f}s')
