@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=0
-#SBATCH --gpus-per-task=1
+#SBATCH --gpus-per-task=2
 #SBATCH --time=00:03:00
 
 #####################################
@@ -31,6 +31,4 @@ echo "Requested ${SLURM_GPUS_ON_NODE} gpus per node"
 
 export LOGLEVEL=INFO
 
-torchrun --nproc_per_node=${SLURM_TASKS_PER_NODE}  --nnodes=1 --rdzv_backend=static --master_addr=localhost --master_port=12345 main.py
-
-
+torchrun --nproc_per_node=2  --nnodes=1 --rdzv_backend=static --master_addr=localhost --master_port=12345 main.py
