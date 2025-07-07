@@ -71,7 +71,7 @@ for epoch in range(num_epochs):
         # To implement data parallelism correctly, you need to average these gradients across all processes.
         # This is done using the NCCL all-reduce collective.
 
-        # ⚠️ Note:
+        # Note:
         # - Only the `SUM` operation is supported by NCCL. To get the average, you must divide the result by the world size manually.
         # - You should iterate over `model.parameters()` as before, but this time apply `all_reduce` to `param.grad.data` (i.e., the gradients), not the parameters themselves.
         # - (Advanced) If you're comfortable with asynchronous communication, consider using `async_op=True` to overlap communication and computation.
@@ -79,16 +79,6 @@ for epoch in range(num_epochs):
         # for each param in model.parameters()
         #     all_reduce(param.grad.dtata)
 
-        handles=list()
-        for param in model.parameters():
-            if param.grad is not None:
-                # All-reduce in-place
-                handle = dist.all_reduce(param.grad.data, op=dist.ReduceOp.SUM, async_op=async_reduce)
-                param.grad.data /= world_size
-                handles.append(handle)
-        if async_reduce:
-           for i in handles:
-               i.wait()
         optimizer.step()
 
     walltime= time.time() - start_time
