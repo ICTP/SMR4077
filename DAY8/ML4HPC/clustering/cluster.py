@@ -20,7 +20,7 @@ def main():
     os.environ["DASK_DISTRIBUTED__COMM__UCX__RDMACM"]="True"
     os.environ["UCX_MEMTYPE_REG_WHOLE_ALLOC_TYPES"]="cuda"
     os.environ["UCX_MEMTYPE_CACHE"]="n"
-
+    current_dir=os.environ.get('SLURM_SUBMIT_DIR')
     cluster = LocalCUDACluster(CUDA_VISIBLE_DEVICES=[0, 1, 2, 3],
                                n_workers=4,
                                threads_per_worker=8,
@@ -48,21 +48,31 @@ def main():
     # Use the make_blobs (from cuml.dask.datasets), to create blobs with
     # n_samples, n_features, n_parts, n_clusters defined above (you may specify the std like cluster_std=0.4, and specify random_state)
     # Specify also the flag: return_centers=True
-    X, _, centers = # ??? 
+    X, _, centers = make_blobs(n_samples=n_samples, n_features=n_features, centers=n_clusters, cluster_std=0.4, 
+                               random_state=start_random_state, n_parts=n_parts, return_centers=True)
     # Wait for the result of array returned by make_blobs
-    # ???
-
-    # Use the KMeans from cuml.dask.cluster with n_clusters defined above to define kmeans_model
+    wait(X)
+    print("\nX:\n", X, flush=True)
+    # Define the KMeans model and fit over the data
+    # Use the KMeans from cuml.dask.cluster with n_clusters defined above 
     kmeans_model = KMeans(n_clusters=n_clusters, random_state=start_random_state)
     # Fit kmeans_model over the blobs data
-    # ???
-    
-    # Now we wait for the result
+    kmeans_model.fit(X)
     wait(kmeans_model._func_fit)
     # Compute the score over the dataset
-    score = # ??
-    
+    score = kmeans_model.score(X)
     print(f"\nScore: {score}\n", flush=True)
+    # Extra notes:
+    # The distributed estimator wrappers inside of the cuml.dask are not intended to be pickled directly. 
+    # The Dask cuML estimators provide a function get_combined_model(), which returns the trained single-GPU model for pickling. 
+    single_gpu_model = kmeans_model.get_combined_model()
+    # Save the model to file
+    pickle.dump(single_gpu_model,  open(current_dir + "/kmeans_model.pkl", "wb"))
+    # Load the model from file
+    single_gpu_model = pickle.load(open(current_dir + "/kmeans_model.pkl", "rb"))
+    # Check the centers
+    print("\nsingle_gpu_model.cluster_centers_:\n",  single_gpu_model.cluster_centers_, flush=True)
+    print("\nTrue centers:\n", centers, flush=True)
     print("Closing...", flush=True)
     client.close()
 

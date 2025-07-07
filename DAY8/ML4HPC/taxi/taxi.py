@@ -72,7 +72,8 @@ def main():
     os.environ["DASK_UCX__INFINIBAND"] = "True"
     os.environ["DASK_UCX__NET_DEVICES"] = "ib0"
     # Connect to a cluster through a Dask client
-    client = Client(scheduler_file='out/scheduler.json')
+    current_dir=os.environ.get('SLURM_SUBMIT_DIR')
+    client = Client(scheduler_file=current_dir + '/out/scheduler.json')
     n_workers = 8
     # n_workers is the number of GPUs your cluster will have
     client.wait_for_workers(n_workers)
@@ -80,7 +81,7 @@ def main():
     print("Workers are ready!",  flush=True)
     # 1. Read and Clean Data
     # On Leonardo we need to pre-download the data, and we assume that all the files are in the following directory
-    base_path = 'data/nyctaxi/'
+    base_path = current_dir + '/data/nyctaxi/'
     # The data needs to be cleaned up before it can be used in a meaningful way.
     # We verify the columns have appropriate datatypes to make it ready for computation using cuML.
     # We create a list of all columns & dtypes the df must have for reading

@@ -50,7 +50,8 @@ def cleanup_memory(client):
 def main():
     
     # Connect to a cluster through a Dask client
-    client = Client(scheduler_file='out/scheduler.json')
+    current_dir=os.environ.get('SLURM_SUBMIT_DIR')
+    client = Client(scheduler_file=current_dir + '/out/scheduler.json')
     client.wait_for_workers(8)
     n_workers = len(client.scheduler_info()["workers"].keys())
     assert n_workers == 8

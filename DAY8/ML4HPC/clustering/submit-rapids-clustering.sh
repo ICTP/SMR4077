@@ -12,18 +12,18 @@
 #SBATCH -J run-dask-cluster
 #SBATCH --output=%x_%j.out
 #SBATCH --error=%x_%j.err
+#SBATCH --export=NONE
 
 module purge
 module load gcc/12.2.0
 module load cuda/12.1
 module load openmpi/4.1.6--gcc--12.2.0
 module load nvhpc/23.5
+module load anaconda3/2023.09-0
 
-eval "$(/leonardo/home/userinternal/mcelori1/miniforge3/bin/conda shell.bash hook)"
-
-#module load anaconda3/2023.09-0 
-
+source $ANACONDA3_HOME/etc/profile.d/conda.sh
 conda activate /leonardo/pub/userinternal/mcelori1/MagureleRAPIDS/rapids_venv
+
 
 export DASK_LOGGING__DISTRIBUTED=info
 export DASK_DISTRIBUTED__COMM__UCX__CREATE_CUDA_CONTEXT=True

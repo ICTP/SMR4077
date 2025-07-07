@@ -33,6 +33,7 @@ def main():
     os.environ["UCX_MEMTYPE_CACHE"]="n"
     dask.config.set({"dataframe.backend": "cudf"})
     dask.config.set({"array.backend": "cupy"})
+    current_dir=os.environ.get('SLURM_SUBMIT_DIR')
     # print client info
     cluster = LocalCUDACluster(CUDA_VISIBLE_DEVICES=[0, 1, 2, 3],
                                n_workers=4,
@@ -80,7 +81,7 @@ def main():
     df = dask.dataframe.from_dask_array(XT_persisted, columns=['x', 'y'])
     res=hv.Scatter(df.compute(),)
     res = res.opts(width=800, height=400)
-    hv.save(res, 'res.html', backend='bokeh')
+    hv.save(res, current_dir+'/res.html', backend='bokeh')
     #df_pandas= pd.DataFrame({'x': XT_persisted_computed[:, 0].get(), 'y': XT_persisted_computed[:, 1].get()}) 
     #res2=df_pandas.hvplot.scatter(x='x', y='y', height=400, width=400)
     #hv.save(res2, 'res2.html', backend='bokeh')

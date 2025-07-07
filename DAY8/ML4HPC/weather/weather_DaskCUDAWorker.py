@@ -34,9 +34,10 @@ def main():
     os.environ["DASK_DISTRIBUTED__COMM__UCX__RDMACM"]="True"
     os.environ["UCX_MEMTYPE_REG_WHOLE_ALLOC_TYPES"]="cuda"
     os.environ["UCX_MEMTYPE_CACHE"]="n"
+    current_dir=os.environ.get('SLURM_SUBMIT_DIR')
     # Use dask-cuda to start one worker per GPU on a single-node system
     # When you shutdown this notebook kernel, the Dask cluster also shuts down.
-    client = Client(scheduler_file='out/scheduler.json')
+    client = Client(scheduler_file=current_dir + '/out/scheduler.json')
     client.wait_for_workers(4)
     # print cluster and client info
     print("\nclient:\n",  client,  flush=True)
@@ -46,7 +47,7 @@ def main():
     # On Leonardo compute node we cannot download the dataset
     # We need to have pre-downloaded data!
     # Here we assume that data have been already downloaded and the files are in the following directory
-    data_dir="./data/"
+    data_dir= current_dir + "/data/"
     # Notice that the CSV files don't have headers, we specify column names manually
     names = ["station_id", "date", "type", "val"]
     # Moreover, there are a lot of features and fields, but only the first 4 are relevant for us
@@ -210,7 +211,7 @@ def main():
     atlanta_rain.sort_index().to_pandas().plot(ax=ax)
     seattle_rain.sort_index().to_pandas().plot(ax=ax)
     ax.legend(['Atlanta', 'Seattle'])
-    plt.savefig("res.png", bbox_inches='tight')
+    plt.savefig(current_dir+"/res.png", bbox_inches='tight')
     # Results
     # It looks like at least for roughly the last 20 years, it rains more by volume in Atlanta than it does in Seattle.
     # But as usual the answer raises additional questions:

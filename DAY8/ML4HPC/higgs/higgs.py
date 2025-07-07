@@ -165,14 +165,15 @@ def report(y_actual, y_pred, filename):
 
 def main():
     # Set up and connect to Dask Client
+    current_dir=os.environ.get('SLURM_SUBMIT_DIR')
     dask.config.set({"dataframe.backend": "cudf"})
-    client = Client(scheduler_file='out/scheduler.json')
+    client = Client(scheduler_file=current_dir+'/out/scheduler.json')
     client.wait_for_workers(8)
     # print client informations
     print("\nclient:\n", client, flush=True)
     # Read the dataset
     # Now, we load the data using dask-cudf
-    ddf = dask_cudf.read_csv("data/HIGGS.csv")
+    ddf = dask_cudf.read_csv(current_dir + "/data/HIGGS.csv")
     colnames = ['process',     'lepton_pT',   'lepton_eta',  'lepton_phi',  
                 'missing_energy_magnitude',   'missing_energy_phi', 
                 'jet_1_pt',    'jet_1_eta',   'jet_1_phi',   'jet_1_b_tag', 
@@ -236,9 +237,9 @@ def main():
     print("\ny_preds_c.shape:\n",  y_preds_c.shape,  flush=True)
     print("\ny_preds_custom_c.shape:\n",  y_preds_custom_c.shape,  flush=True)
     print("\nmodel results:\n", flush=True)
-    report(y_valid_c_label.to_cupy(), y_preds_c_label.to_cupy(), 'cm_matrix.png')
+    report(y_valid_c_label.to_cupy(), y_preds_c_label.to_cupy(), current_dir + '/cm_matrix.png')
     print("\ncustom model results:\n", flush=True)
-    report(y_valid_c_label.to_cupy(), y_preds_custom_c_label.to_cupy(), 'cm_matrix_custom.png')
+    report(y_valid_c_label.to_cupy(), y_preds_custom_c_label.to_cupy(), current_dir + '/cm_matrix_custom.png')
     roc_auc = roc_auc_score(y_valid_c_label.to_cupy(), y_preds_c.to_cupy())
     roc_auc_custom = roc_auc_score(y_valid_c_label.to_cupy(), y_preds_custom_c.to_cupy())
     print(f"\nmodel roc_auc: {roc_auc}\n", flush=True)
