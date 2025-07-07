@@ -17,6 +17,7 @@ world_size=dist.get_world_size()
 device_id = rank % torch.cuda.device_count()
 print(f"Hello from rank {rank}, using device: {device_id}\n")
 
+# Wrap the model using Distributed Data Parallel ! 
 model = AlexNetCIFAR().to(device_id)
 ddp_model = DDP(model, device_ids=[device_id])
 
@@ -38,7 +39,6 @@ loss = torch.nn.CrossEntropyLoss()
 optimizer = optim.Adam(ddp_model.parameters(), lr=0.001)
 
 num_epochs = 10
-async_reduce=False
 
 for epoch in range(num_epochs):
     # Sync the distributed sampler achievi a suffle
@@ -57,7 +57,6 @@ for epoch in range(num_epochs):
     walltime= time.time() - start_time
     # Optional: Evaluation (note this can be computationally expensive)
     correct, total = evaluate(ddp_model, test_loader, device_id)
-
     
     if rank==0:
         print(f'Epoch {epoch}, Accuracy {correct/total}, Walltime per epoch: {walltime:.4f}s')
