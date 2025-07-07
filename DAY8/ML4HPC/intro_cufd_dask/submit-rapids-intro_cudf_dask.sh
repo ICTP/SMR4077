@@ -12,6 +12,7 @@
 #SBATCH -J run-dask-intro_dask
 #SBATCH --output=%x_%j.out
 #SBATCH --error=%x_%j.err
+#SBATCH --export=NONE
 
 module purge
 module load gcc/12.2.0
@@ -20,6 +21,7 @@ module load openmpi/4.1.6--gcc--12.2.0
 module load nvhpc/23.5
 module load anaconda3/2023.09-0
 
+source $ANACONDA3_HOME/etc/profile.d/conda.sh
 conda activate /leonardo/pub/userinternal/mcelori1/MagureleRAPIDS/rapids_venv
 
 export DASK_LOGGING__DISTRIBUTED=info
