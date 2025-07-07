@@ -47,7 +47,7 @@ test_loader = DataLoader(test_dataset, shuffle=False,
                              sampler=test_sampler, drop_last=True)
 
 # Define the cross entropy loss
-loss = nn.CrossEntropyLoss()
+loss = torch.nn.CrossEntropyLoss()
 # Use the adam optimizer
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
