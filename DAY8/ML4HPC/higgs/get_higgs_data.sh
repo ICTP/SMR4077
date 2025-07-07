@@ -5,7 +5,7 @@
 #SBATCH --partition=lrd_all_serial
 #SBATCH --time=4:00:00
 #SBATCH --mem=30GB
-#SBATCH --job-name=get_weather_data
+#SBATCH --job-name=get_higgs_data
 #SBATCH --output=%x_%j.out
 #SBATCH --error=%x_%j.err
 
