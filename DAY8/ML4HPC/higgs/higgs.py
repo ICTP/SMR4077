@@ -205,7 +205,9 @@ def main():
     y_valid = y_valid.persist()
     y_preds = y_preds.persist()
     y_preds_custom = y_preds_custom.persist()
-    # By rounding and converting to int, <0.5 becomes 0, >0.5 becomes 1 
+    # The prediction is a probability between 0 and 1 that the event is a Higgs boson.
+    # By rounding and converting to int, probabilities < 0.5 becomes 0 and probabilities > 0.5 becomes 1 
+    # In this case we use a simple threshold of 0.5, but other possibilities are allowed 
     y_valid_label = y_valid.round().astype(int)
     y_preds_label = y_preds.round().astype(int)
     y_preds_custom_label = y_preds_custom.round().astype(int)

@@ -69,10 +69,10 @@ def main():
     wait([X, y])
     print("\nX:\n", X, flush=True)
     print("\ny:\n", y, flush=True)
-    # Define a Linear Regression model
-    lr=LinearRegression(client=client, fit_intercept=True, normalize=False)
+    # Define a Linear Regression model lr with the flags fit_intercept=True, normalize=False
+    lr= # ???
     # Fit the model over the data
-    lr.fit(X, y)
+    # ???
     # Get the learned coefficient and bias 
     lrcoef= lr.coef_
     lrbias= lr.intercept_

@@ -1,4 +1,4 @@
-from cuml.dask.cluster import KMeans as cumlKMeans
+from cuml.dask.cluster import KMeans
 from dask_cuda import LocalCUDACluster
 from dask.distributed import Client, wait
 import dask.array as da
@@ -44,31 +44,25 @@ def main():
     start_random_state = 170
     n_parts = 20
     n_clusters = 8
-    # Get the dataset (X, y), together with the true centers of the blobs dataset 
-    X, _, centers = make_blobs(n_samples=n_samples, n_features=n_features, centers=n_clusters, cluster_std=0.4, 
-                               random_state=start_random_state, n_parts=n_parts, return_centers=True)
-    #dX = X #.to_dask_dataframe().to_backend('cudf')
-    #dy = y #.to_dask_dataframe().to_backend('cudf')
-    wait(X)
-    print("\nX:\n", X, flush=True)
-    #print("\ndy:\n", dy, flush=True)
-    # Define the KMeans model and fit over the data
-    kmeans_model = cumlKMeans(n_clusters=n_clusters, random_state=start_random_state)
-    kmeans_model.fit(X)
+    # Get the dataset (X, y), together with the true centers of the blobs dataset
+    # Use the make_blobs (from cuml.dask.datasets), to create blobs with
+    # n_samples, n_features, n_parts, n_clusters defined above (you may specify the std like cluster_std=0.4, and specify random_state)
+    # Specify also the flag: return_centers=True
+    X, _, centers = # ??? 
+    # Wait for the result of array returned by make_blobs
+    # ???
+
+    # Use the KMeans from cuml.dask.cluster with n_clusters defined above to define kmeans_model
+    kmeans_model = KMeans(n_clusters=n_clusters, random_state=start_random_state)
+    # Fit kmeans_model over the blobs data
+    # ???
+    
+    # Now we wait for the result
     wait(kmeans_model._func_fit)
-    # Compute the score over the dataser
-    score = kmeans_model.score(X)
+    # Compute the score over the dataset
+    score = # ??
+    
     print(f"\nScore: {score}\n", flush=True)
-    # The distributed estimator wrappers inside of the cuml.dask are not intended to be pickled directly. 
-    # The Dask cuML estimators provide a function get_combined_model(), which returns the trained single-GPU model for pickling. 
-    single_gpu_model = kmeans_model.get_combined_model()
-    # Save the model to file
-    pickle.dump(single_gpu_model,  open("kmeans_model.pkl", "wb"))
-    # Load the model from file
-    single_gpu_model = pickle.load(open("kmeans_model.pkl", "rb"))
-    # Check the centers
-    print("\nsingle_gpu_model.cluster_centers_:\n",  single_gpu_model.cluster_centers_, flush=True)
-    print("\nTrue centers:\n", centers, flush=True)
     print("Closing...", flush=True)
     client.close()
 
