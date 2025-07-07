@@ -10,5 +10,9 @@ jacobi_hdf5:
 
 jacobi_gpu:
 	${CC} jacobi.c -o ${@}.x -DOPENACC -Minfo=all -acc -ta=tesla,time -fast
+
+jacobi_gpu_hdf5:
+	${CC} jacobi.c -O3 -o ${@}.x -DOPENACC -Minfo=all -acc -ta=tesla,time -fast -I ${HDF5_INC} -L ${HDF5_LIB} -lhdf5 -DHDF5 -DDUMP
+
 clean:
 	rm -f *.x
