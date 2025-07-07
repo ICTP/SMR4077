@@ -4,7 +4,7 @@
 #SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=4
 #SBATCH --hint=nomultithread
-#SBATCH -A ICT25_CMSP_0
+#SBATCH -A tra25_ictp_rom
 #SBATCH --time 00:10:00
 #SBATCH --gres=gpu:4
 #SBATCH --mem=490000MB
