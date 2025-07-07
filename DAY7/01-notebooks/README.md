@@ -9,11 +9,11 @@ $  sbatch -A tra25_ictp_rom get_notebook.sh
 And then follow the instruction on the file `connection_instruction.txt`:
 
 ```bash 
-Run on you laptop: ssh -L 12345:10.8.0.201:12345 -N a08tra40@login.leonardo.cineca.it Run on you laptop: ssh -L 12345:10.8.0.201:12345 -N a08tra40@login.leonardo.cineca.it -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+Run on you laptop: ssh -L 12345:10.8.0.201:12345 -N a08tra40@login.leonardo.cineca.it -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
 Open on you browser: http://127.0.0.1:12345
 Pls. do not closet the terminal just opened!
 ```
-
+This open an SSH tunnel between your laptop and the compute node assigned to you by the scheduler via Login node.
 ## Content
 
 ### `00-pytorch.ipynb`
