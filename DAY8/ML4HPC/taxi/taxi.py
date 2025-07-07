@@ -81,7 +81,7 @@ def main():
     print("Workers are ready!",  flush=True)
     # 1. Read and Clean Data
     # On Leonardo we need to pre-download the data, and we assume that all the files are in the following directory
-    base_path = current_dir + '/data/nyctaxi/'
+    base_path = "/leonardo_work/tra25_ictp_rom/DAY8data/taxi/data/nyctaxi/"
     # The data needs to be cleaned up before it can be used in a meaningful way.
     # We verify the columns have appropriate datatypes to make it ready for computation using cuML.
     # We create a list of all columns & dtypes the df must have for reading

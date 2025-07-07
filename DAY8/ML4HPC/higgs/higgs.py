@@ -173,7 +173,7 @@ def main():
     print("\nclient:\n", client, flush=True)
     # Read the dataset
     # Now, we load the data using dask-cudf
-    ddf = dask_cudf.read_csv(current_dir + "/data/HIGGS.csv")
+    ddf = dask_cudf.read_csv( "/leonardo_work/tra25_ictp_rom/DAY8data/higgs/data/HIGGS.csv")
     colnames = ['process',     'lepton_pT',   'lepton_eta',  'lepton_phi',  
                 'missing_energy_magnitude',   'missing_energy_phi', 
                 'jet_1_pt',    'jet_1_eta',   'jet_1_phi',   'jet_1_b_tag', 

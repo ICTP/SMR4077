@@ -13,7 +13,7 @@
 #SBATCH --output=%x_%j.out
 #SBATCH --error=%x_%j.err
 #SBATCH --export=NONE
-
+#SBATCH -A tra25_ictp_rom
 module purge
 module load gcc/12.2.0
 module load cuda/12.1

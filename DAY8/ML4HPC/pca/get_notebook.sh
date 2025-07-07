@@ -12,6 +12,8 @@
 #SBATCH --output=%x_%j.out
 #SBATCH --error=%x_%j.err
 #SBATCH --export=NONE
+#SBATCH -A tra25_ictp_rom
+
 
 
 #####################################

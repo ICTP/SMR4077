@@ -59,7 +59,7 @@ def main():
     # On Leonardo compute node we cannot download the dataset
     # We need to have pre-downloaded data!
     # Here we assume that data have been already downloaded and the files are in the following directory
-    data_dir=current_dir + "/data/"
+    data_dir="/leonardo_work/tra25_ictp_rom/DAY8data/weather/data/"
     # Notice that the CSV files don't have headers, we specify column names manually
     names = ["station_id", "date", "type", "val"]
     # Moreover, there are a lot of features and fields, but only the first 4 are relevant for us
