@@ -78,6 +78,8 @@ with open('${JOB_OUTPUT_DIR}/address.dat', 'w') as g:
   g.write(address)
 "
 
+sleep 30
+
 SCHED_ADDR=`cat ${JOB_OUTPUT_DIR}/address.dat`
 
 echo "DEBUGGG ${SCHED_ADDR}"
