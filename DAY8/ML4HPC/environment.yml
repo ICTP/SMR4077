@@ -1,4 +1,4 @@
-name: /leonardo_work/cin_staff/mcelori1/Magurele/rapids_venv
+name: /leonardo/pub/userinternal/mcelori1/MagureleRAPIDS/rapids_venv
 channels:
   - nvidia
   - rapidsai
@@ -533,4 +533,4 @@ dependencies:
   - zlib-ng=2.2.4=h7955e40_0
   - zstandard=0.23.0=py312h66e93f0_2
   - zstd=1.5.7=hb8e6e7a_2
-prefix: /leonardo_work/cin_staff/mcelori1/Magurele/rapids_venv
+prefix: /leonardo/pub/userinternal/mcelori1/MagureleRAPIDS/rapids_venv

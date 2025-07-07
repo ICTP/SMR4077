@@ -31,7 +31,7 @@ c_8 = [ 3.7096488  -0.2103377   2.0523129  -0.57269555 -0.07889447 -2.7098231 ]
 
 Then, we instantiate a cuml.dask.cluster.KMeans kmeans_model and fit over the dataset:
 
-kmeans_model.fit(X)
+`kmeans_model.fit(X)`
 
 The resulting learned centroids C are
 

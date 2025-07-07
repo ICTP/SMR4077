@@ -2,17 +2,17 @@
 
 In `regression.py`, we consider a linear regression on a synthetic dataset.
 
-The dataset is of the form $\{y_i,\,X_{i1},...,X_{im}\}_{i=1}^{n}$ of $n$ samples and $m$ features, generated from a linear model, that is a linear relationship between the dependent variable $y$ and the vector of regressors $X$.  
+The dataset is of the form $(y_i,\,X_{i1},...,X_{im})_{i=1}^{n}$ of $n$ samples and $m$ features, generated from a linear model, that is a linear relationship between the dependent variable $y$ and the vector of regressors $X$.  
 
 $$y_i=\sum_{f=1}^{m}X_{if} c_f + b $$
 
 where $c_f$ is a vector of $m$ coefficients and $b$ is the bias.
 
-Among the $m$ features, we suppose that only $l$ features are informative, that is only $c_1$,\ldots ,c_l$ are different from zero.
+Among the $m$ features, we suppose that only $l$ features are informative, that is only $c_1,...,c_l$ are different from zero.
 
 Given the dataset $X, y$ generated from the true underlying coefficients $c_m$ and the true underlying bias $b$, the goal is to learn the coeffients $C_m$ and the bias $B$ from the data, by minimizing the mean squared error (MSE).
 
-In `dask\_cuda`, the $X$ is an array of the form 
+In `dask_cuda`, the $X$ is an array of the form 
 
 X:
  dask.array<concatenate, shape=(320000000, 64), dtype=float32, chunksize=(40000000, 64), chunktype=cupy.ndarray>
@@ -63,9 +63,9 @@ The other true coefficients being zero.
 
 Moreover, suppose that the true bias is one, that is b = 1.0
  
-Then, we instantiate a cuml.dask.linear_model.LinearRegression lr and fit over the dataset:
+Then, we instantiate a cuml.dask.linear_model.LinearRegression `lr` and fit over the dataset:
 
-lr.fit(X, y)
+`lr.fit(X, y)`
 
 The resulting learned coefficients C are
 
