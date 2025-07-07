@@ -1,0 +1,213 @@
+Loading gromacs/2024.2--openmpi--4.1.6--gcc--12.2.0-cuda-12.2
+  Loading requirement: glibc/2.28--gcc--12.2.0-gi6mmti
+    gcc-runtime/12.2.0--gcc--12.2.0-dqfwf7y numactl/2.0.14--gcc--12.2.0-cxzp4ci
+    bzip2/1.0.8-ib3znej libiconv/1.17-nhc3mhm xz/5.4.6-xxxg42c
+    zlib-ng/2.1.6-jkgunjc libxml2/2.10.3-zbbe7lm ncurses/6.5-svfl57u
+    pigz/2.8-5bwzpml zstd/1.5.6-uq5yyux tar/1.34-jgektnv gettext/0.22.5-hsxgafg
+    krb5/1.20.1-n4kmebh libedit/3.1-20230828-nme7boz libxcrypt/4.4.35-7om46b5
+    openssh/9.7p1-tk2b5yv openmpi/4.1.6--gcc--12.2.0-cuda-12.2
+    fftw/3.3.10--openmpi--4.1.6--gcc--12.2.0-spack0.22
+    openblas/0.3.26--gcc--12.2.0 gsl/2.7.1--gcc--12.2.0-spack0.22
+    plumed/2.9.2--openmpi--4.1.6--gcc--12.2.0
+               :-) GROMACS - gmx grompp, 2024.2-plumed_2.9.2 (-:
+
+Executable:   /leonardo/prod/spack/06/install/0.22/linux-rhel8-icelake/gcc-12.2.0/gromacs-2024.2-r6xn3w5gl6nqzx6axslapoppq5aqek5g/bin/gmx_mpi
+Data prefix:  /leonardo/prod/spack/06/install/0.22/linux-rhel8-icelake/gcc-12.2.0/gromacs-2024.2-r6xn3w5gl6nqzx6axslapoppq5aqek5g
+Working dir:  /leonardo_scratch/large/userexternal/fspiga00/ICTP_MPS/water-cut1.0_GMX50_bare/large.B
+Command line:
+  gmx_mpi grompp -f pme.mdp
+
+Ignoring obsolete mdp entry 'title'
+Ignoring obsolete mdp entry 'cpp'
+Ignoring obsolete mdp entry 'ns_type'
+Replacing old mdp entry 'nstxtcout' by 'nstxout-compressed'
+Generating 1-4 interactions: fudge = 0.5
+
+NOTE 1 [file unknown]:
+  You are using constraints on all bonds, whereas the forcefield has been
+  parametrized only with constraints involving hydrogen atoms. We suggest
+  using constraints = h-bonds instead, this will also improve performance.
+
+Number of degrees of freedom in T-Coupling group System is 95997.00
+
+There was 1 NOTE
+
+GROMACS reminds you: "Molecular biology is essentially the practice of biochemistry without a license." (Edwin Chargaff)
+
+Setting the LD random seed to 2045687759
+
+Generated 330891 of the 330891 non-bonded parameter combinations
+
+Generated 330891 of the 330891 1-4 parameter combinations
+
+Excluding 2 bonded neighbours molecule type 'SOL'
+
+turning all bonds into constraints...
+Analysing residue names:
+There are: 16000      Water residues
+
+The largest distance between excluded atoms is 0.165 nm between atom 35756 and 35757
+
+Determining Verlet buffer for a tolerance of 0.005 kJ/mol/ps at 300 K
+
+Calculated rlist for 1x1 atom pair-list as 1.036 nm, buffer size 0.036 nm
+
+Set rlist, assuming 4x4 atom pair-list, to 1.000 nm, buffer size 0.000 nm
+
+Note that mdrun will redetermine rlist based on the actual pair-list setup
+Calculating fourier grid dimensions for X Y Z
+Using a fourier grid of 100x52x52, spacing 0.125 0.120 0.120
+
+Estimate for the relative computational load of the PME mesh part: 0.32
+
+This run will generate roughly 4 Mb of data
+                :-) GROMACS - gmx mdrun, 2024.2-plumed_2.9.2 (-:
+
+Executable:   /leonardo/prod/spack/06/install/0.22/linux-rhel8-icelake/gcc-12.2.0/gromacs-2024.2-r6xn3w5gl6nqzx6axslapoppq5aqek5g/bin/gmx_mpi
+Data prefix:  /leonardo/prod/spack/06/install/0.22/linux-rhel8-icelake/gcc-12.2.0/gromacs-2024.2-r6xn3w5gl6nqzx6axslapoppq5aqek5g
+Working dir:  /leonardo_scratch/large/userexternal/fspiga00/ICTP_MPS/water-cut1.0_GMX50_bare/large.B
+Command line:
+  gmx_mpi mdrun -ntomp 4 -noconfout -nsteps 16000 -nstlist 300 -nb gpu -update gpu -pme gpu -npme 1 -dlb no -v
+
+Reading file topol.tpr, VERSION 2024.2-plumed_2.9.2 (single precision)
+GMX_ENABLE_DIRECT_GPU_COMM environment variable detected, enabling direct GPU communication using GPU-aware MPI.
+
+Overriding nsteps with value passed on the command line: 16000 steps, 32 ps
+Changing nstlist from 10 to 300, rlist from 1 to 1.767
+
+
+On host lrdn0002.leonardo.local 4 GPUs selected for this run.
+Mapping of GPU IDs to the 8 GPU tasks in the 8 ranks on this node:
+  PP:0,PP:0,PP:1,PP:1,PP:2,PP:2,PP:3,PME:3
+PP tasks will do (non-perturbed) short-ranged interactions on the GPU
+PP task will update and constrain coordinates on the GPU
+PME tasks will do all aspects on the GPU
+GPU direct communication will be used between MPI ranks.
+Using 8 MPI processes
+
+Non-default thread affinity set, disabling internal thread affinity
+
+Using 4 OpenMP threads per MPI process
+
+starting mdrun 'Water'
+16000 steps,     32.0 ps.
+step 0
+step 100
+step 200
+imb F  3% pme/F 0.45 step 300, remaining wall clock time:    34 s          
+step 400, remaining wall clock time:    33 s          
+step 500, remaining wall clock time:    32 s          
+imb F  4% pme/F 0.41 step 600, remaining wall clock time:    32 s          
+step 700, remaining wall clock time:    31 s          
+step 800, remaining wall clock time:    31 s          
+imb F  2% pme/F 0.41 step 900, remaining wall clock time:    31 s          
+step 1000, remaining wall clock time:    31 s          
+step 1100, remaining wall clock time:    30 s          
+imb F  3% pme/F 0.42 step 1200, remaining wall clock time:    30 s          
+step 1300, remaining wall clock time:    30 s          
+step 1400, remaining wall clock time:    30 s          
+imb F  2% pme/F 0.42 step 1500, remaining wall clock time:    29 s          
+step 1600, remaining wall clock time:    29 s          
+step 1700, remaining wall clock time:    29 s          
+imb F  4% pme/F 0.42 step 1800, remaining wall clock time:    29 s          
+step 1900, remaining wall clock time:    28 s          
+step 2000, remaining wall clock time:    28 s          
+imb F  3% pme/F 0.42 step 2100, remaining wall clock time:    28 s          
+step 2200, remaining wall clock time:    28 s          
+step 2300, remaining wall clock time:    27 s          
+imb F  4% pme/F 0.42 step 2400, remaining wall clock time:    27 s          
+step 2500, remaining wall clock time:    27 s          
+step 2600, remaining wall clock time:    27 s          
+step 3000: timed with pme grid 100 52 52, coulomb cutoff 1.000: 1371.4 M-cycles
+step 3600: timed with pme grid 84 42 42, coulomb cutoff 1.187: 1397.4 M-cycles
+step 4200: timed with pme grid 72 36 36, coulomb cutoff 1.384: 1396.3 M-cycles
+step 4800: timed with pme grid 64 32 32, coulomb cutoff 1.557: 1427.8 M-cycles
+step 4800: the maximum allowed grid scaling limits the PME load balancing to a coulomb cut-off of 1.661
+step 5400: timed with pme grid 60 32 32, coulomb cutoff 1.661: 1448.4 M-cycles
+step 6000: timed with pme grid 64 32 32, coulomb cutoff 1.557: 1414.5 M-cycles
+step 6600: timed with pme grid 72 36 36, coulomb cutoff 1.384: 1399.9 M-cycles
+step 7200: timed with pme grid 80 40 40, coulomb cutoff 1.246: 1382.9 M-cycles
+step 7800: timed with pme grid 84 42 42, coulomb cutoff 1.187: 1379.8 M-cycles
+step 8400: timed with pme grid 96 44 44, coulomb cutoff 1.133: 1378.9 M-cycles
+step 9000: timed with pme grid 96 48 48, coulomb cutoff 1.038: 1279.6 M-cycles
+step 9600: timed with pme grid 100 52 52, coulomb cutoff 1.000: 953.9 M-cycles
+step 10200: timed with pme grid 100 52 52, coulomb cutoff 1.000: 946.1 M-cycles
+              optimal pme grid 100 52 52, coulomb cutoff 1.000
+imb F  7% pme/F 0.56 step 10500, remaining wall clock time:    13 s          
+step 10600, remaining wall clock time:    13 s          
+step 10700, remaining wall clock time:    13 s          
+imb F  6% pme/F 0.56 step 10800, remaining wall clock time:    12 s          
+step 10900, remaining wall clock time:    12 s          
+step 11000, remaining wall clock time:    12 s          
+imb F  7% pme/F 0.56 step 11100, remaining wall clock time:    12 s          
+step 11200, remaining wall clock time:    11 s          
+step 11300, remaining wall clock time:    11 s          
+imb F  6% pme/F 0.55 step 11400, remaining wall clock time:    11 s          
+step 11500, remaining wall clock time:    10 s          
+step 11600, remaining wall clock time:    10 s          
+imb F  7% pme/F 0.56 step 11700, remaining wall clock time:    10 s          
+step 11800, remaining wall clock time:    10 s          
+step 11900, remaining wall clock time:     9 s          
+imb F  5% pme/F 0.57 step 12000, remaining wall clock time:     9 s          
+step 12100, remaining wall clock time:     9 s          
+step 12200, remaining wall clock time:     8 s          
+imb F  7% pme/F 0.57 step 12300, remaining wall clock time:     8 s          
+step 12400, remaining wall clock time:     8 s          
+step 12500, remaining wall clock time:     8 s          
+imb F  7% pme/F 0.55 step 12600, remaining wall clock time:     7 s          
+step 12700, remaining wall clock time:     7 s          
+step 12800, remaining wall clock time:     7 s          
+imb F  7% pme/F 0.57 step 12900, remaining wall clock time:     7 s          
+step 13000, remaining wall clock time:     6 s          
+step 13100, remaining wall clock time:     6 s          
+imb F  6% pme/F 0.57 step 13200, remaining wall clock time:     6 s          
+step 13300, remaining wall clock time:     6 s          
+step 13400, remaining wall clock time:     5 s          
+imb F  8% pme/F 0.56 step 13500, remaining wall clock time:     5 s          
+step 13600, remaining wall clock time:     5 s          
+step 13700, remaining wall clock time:     5 s          
+imb F  6% pme/F 0.55 step 13800, remaining wall clock time:     4 s          
+step 13900, remaining wall clock time:     4 s          
+step 14000, remaining wall clock time:     4 s          
+imb F  7% pme/F 0.56 step 14100, remaining wall clock time:     4 s          
+step 14200, remaining wall clock time:     4 s          
+step 14300, remaining wall clock time:     3 s          
+imb F  6% pme/F 0.56 step 14400, remaining wall clock time:     3 s          
+step 14500, remaining wall clock time:     3 s          
+step 14600, remaining wall clock time:     3 s          
+imb F  8% pme/F 0.55 step 14700, remaining wall clock time:     2 s          
+step 14800, remaining wall clock time:     2 s          
+step 14900, remaining wall clock time:     2 s          
+imb F  7% pme/F 0.54 step 15000, remaining wall clock time:     2 s          
+step 15100, remaining wall clock time:     1 s          
+step 15200, remaining wall clock time:     1 s          
+imb F  6% pme/F 0.57 step 15300, remaining wall clock time:     1 s          
+step 15400, remaining wall clock time:     1 s          
+step 15500, remaining wall clock time:     1 s          
+imb F  6% pme/F 0.54 step 15600, remaining wall clock time:     0 s          
+step 15700, remaining wall clock time:     0 s          
+step 15800, remaining wall clock time:     0 s          
+imb F  7% pme/F 0.55 step 15900, remaining wall clock time:     0 s          
+step 16000, remaining wall clock time:     0 s          
+
+
+Dynamic load balancing report:
+ DLB was off during the run per user request.
+ Average load imbalance: 5.4%.
+ The balanceable part of the MD step is 77%, load imbalance is computed from this.
+ Part of the total run time spent waiting due to load imbalance: 4.2%.
+ Average PME mesh/force load: 0.509
+ Part of the total run time spent waiting due to PP/PME imbalance: 2.6 %
+
+
+NOTE: 16 % of the run time was spent in domain decomposition,
+      1 % of the run time was spent in pair search,
+      you might want to increase nstlist (this has no effect on accuracy)
+
+               Core t (s)   Wall t (s)        (%)
+       Time:     1090.940       34.096     3199.6
+                 (ns/day)    (hour/ns)
+Performance:       81.095        0.296
+
+GROMACS reminds you: "Apologies to the astrophysics student I met at a party years ago. When you told me how many hours a day you used 4chan and how much you love it, I gave you a funny look and walked away. Now, a decade later, I realize you were talking about Fortran." (Anonymous)
+

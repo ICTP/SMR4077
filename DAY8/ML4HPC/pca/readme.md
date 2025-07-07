@@ -17,11 +17,7 @@ A number of experiments are conducted, and each measurement vector is arranged a
 
 Thus, consider an $n\times m$ data matrix, $X$, where the $n$ rows represent $n$ samples, and each of the $m$ columns is a particular kind of feature.
 
-We now compute the average row  $\bar{x}$ (i.e., the mean of all rows), and subtract it from $X$. 
-
-The mean $\bar{x}$ is given by
-
-$$\bar{x}_j = \frac{1}{n}\sum_{i=1}^n X_{ij}$$
+Compute the average row  $\bar{X}$ (i.e., the mean of all rows), and subtract it from $X$. 
 
 Subtracting $\bar{X}$ from X results in the mean-subtracted data B:
 
