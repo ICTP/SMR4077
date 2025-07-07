@@ -51,8 +51,10 @@ train_loader = DataLoader(
 Model weights are randomly initialized. To ensure all ranks start with the **same weights**, we broadcast the model parameters from **rank 0** to all other ranks:
 
 ```python
-for param in model.parameters():
-    dist.broadcast(param.data, src=0)
+# Pseudocode:
+# for each parameters in model.parameters()
+#    broadcast from rank 0 to everyone
+
 ```
 
 ---
@@ -62,9 +64,10 @@ for param in model.parameters():
 After each rank computes its gradients locally (based on its mini-batch), we **synchronize** gradients using `all_reduce` to average them across all processes:
 
 ```python
-for param in model.parameters():
-    dist.all_reduce(param.grad.data, op=dist.ReduceOp.SUM)
-    param.grad.data /= world_size
+         # Pseudocode:
+         # for each parameters in model.parameters()
+         #    reduce parameter.grad.data using SUM operation
+         #    Calculate the average
 ```
 
 This ensures the model update reflects the combined learning signal from all data partitions.

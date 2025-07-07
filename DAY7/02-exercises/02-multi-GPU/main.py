@@ -75,9 +75,11 @@ for epoch in range(num_epochs):
         # - Only the `SUM` operation is supported by NCCL. To get the average, you must divide the result by the world size manually.
         # - You should iterate over `model.parameters()` as before, but this time apply `all_reduce` to `param.grad.data` (i.e., the gradients), not the parameters themselves.
         # - (Advanced) If you're comfortable with asynchronous communication, consider using `async_op=True` to overlap communication and computation.
+         # Pseudocode:
+         # for each parameters in model.parameters()
+         #    reduce parameter.grad.data using SUM operation
+         #    Calculate the average
 
-        # for each param in model.parameters()
-        #     all_reduce(param.grad.dtata)
 
         optimizer.step()
 
