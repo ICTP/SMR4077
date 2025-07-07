@@ -38,7 +38,6 @@ for epoch in range(20):
         # TODO: Compute loss comparing predictions and true labels
         # TODO: Backward pass — compute gradients
         # TODO: Optimization step — update model parameters
-        optimizer.step()
         loss_epoch += l.item()
     end = time()-start
 

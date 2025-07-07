@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=boost_usr_prod
 #SBATCH --qos=boost_qos_dbg
-#SBATCH --job-name=nccl-test
+#SBATCH --job-name=single-gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 ##SBATCH --cpus-per-task=4
