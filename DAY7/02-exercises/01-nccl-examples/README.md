@@ -87,13 +87,6 @@ Each process does the following:
 **Hint:** This is a key operation in data-parallel training — remember how it works!
 
 ```
-After reduce:
-       ---------------------
-Gpu 0  | 2  | 2  | 2  | 2  |
-       ---------------------
-       ---------------------
-Gpu 1  | 2  | 2  | 2  | 2  |
-       ---------------------
 
 Before reduce:
        ---------------------
@@ -103,6 +96,13 @@ Gpu 0  | 1  | 1  | 1  | 1  |
 Gpu 1  | 1  | 1  | 1  | 1  |
        ---------------------
 
+After reduce:
+       ---------------------
+Gpu 0  | 2  | 2  | 2  | 2  |
+       ---------------------
+       ---------------------
+Gpu 1  | 2  | 2  | 2  | 2  |
+       ---------------------
 ```
 
 ## Exercise

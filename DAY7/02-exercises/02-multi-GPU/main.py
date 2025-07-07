@@ -84,8 +84,6 @@ for epoch in range(num_epochs):
         optimizer.step()
 
     walltime= time.time() - start_time
-    # Optional, not necessary and expensive
-    correct,total=evaluate(model,test_loader,device_id)
     # Optional: Evaluation (note this can be computationally expensive)
     correct, total = evaluate(model, test_loader, device_id)
 

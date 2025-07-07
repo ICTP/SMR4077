@@ -23,7 +23,7 @@ model = AlexNetCIFAR().to(device_id)
 # In data parallelism, each process must start with the same model parameters.
 # However, by default, each process initializes its model independently with random weights.
 # To ensure consistency, broadcast the model parameters from rank 0 to all other ranks.
-# 
+#
 # You can iterate over the model parameters using: model.parameters()
 # Use the broadcast collective from the torch.distributed package.
 # (The process group has already been initialized for you.)
@@ -42,7 +42,7 @@ train_sampler = DistributedSampler(train_dataset,num_replicas=world_size,rank=ra
 test_sampler = DistributedSampler(test_dataset,num_replicas=world_size,rank=rank)
 
 train_loader = DataLoader(train_dataset, shuffle=False,
-                              sampler=train_sampler,batch_size=512//world_size,num_workers=1, drop_last=True,pin_memory=True)
+                              sampler=train_sampler,batch_size=1024//world_size,num_workers=1, drop_last=True,pin_memory=True)
 
 test_loader = DataLoader(test_dataset, shuffle=False,
                              sampler=test_sampler, drop_last=True)
@@ -63,7 +63,7 @@ for epoch in range(num_epochs):
     model.train()
     for batch_idx, (inputs, targets) in enumerate(train_loader):
         inputs, targets = inputs.to(device_id), targets.to(device_id)
-        optimizer.zero_grad() 
+        optimizer.zero_grad()
         outputs = model(inputs)
         loss_value = loss(outputs, targets)
         loss_value.backward()
@@ -92,6 +92,8 @@ for epoch in range(num_epochs):
         optimizer.step()
 
     walltime= time.time() - start_time
+    # Optional, not necessary and expensive
+    correct,total=evaluate(model,test_loader,device_id)
     # Optional: Evaluation (note this can be computationally expensive)
     correct, total = evaluate(model, test_loader, device_id)
 
@@ -102,8 +104,7 @@ for epoch in range(num_epochs):
     # - The total number of evaluated samples (`total`)
     # Use a reduce collective (e.g., dist.reduce or dist.all_reduce) to sum these values across all ranks
     # This will allow rank 0 to compute and report the overall test accuracy.
-    dist.all_reduce(correct, op=dist.ReduceOp.SUM)
-    dist.all_reduce(total, op=dist.ReduceOp.SUM)
-
+    dist.reduce(correct, dst=0, op=dist.ReduceOp.SUM)
+    dist.reduce(total, dst=0, op=dist.ReduceOp.SUM)
     if rank==0:
         print(f'Epoch {epoch}, Accuracy {correct/total}, Walltime per epoch: {walltime:.4f}s')
