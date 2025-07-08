@@ -4,7 +4,7 @@
 
 Contents:
 
-    slides: Material presented during the lecture.
+- `slides`: Material presented during the lecture.
     
 Intro:
 - `intro_dask`: introduction to basic features of dask
