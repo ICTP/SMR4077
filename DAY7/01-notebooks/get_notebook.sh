@@ -1,13 +1,13 @@
 #!/bin/bash
 #SBATCH --partition=boost_usr_prod
-#SBATCH --qos=boost_qos_dbg
+##SBATCH --qos=boost_qos_dbg
 #SBATCH --job-name=nccl-test
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=12
-#SBATCH --mem=0
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=50G
 #SBATCH --gpus-per-task=1
-#SBATCH --time=00:30:00
+#SBATCH --time=05:30:00
 
 #####################################
 #       ENV SETUP                   #
