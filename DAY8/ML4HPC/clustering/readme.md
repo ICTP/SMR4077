@@ -29,11 +29,7 @@ c_7 = [-9.41413     3.884511   -3.8138413  -8.788079    8.086969    5.678731  ]
 
 c_8 = [ 3.7096488  -0.2103377   2.0523129  -0.57269555 -0.07889447 -2.7098231 ] 
 
-Then, we instantiate a cuml.dask.cluster.KMeans kmeans_model and fit over the dataset:
-
-`kmeans_model.fit(X)`
-
-The resulting learned centroids C are
+Then, we instantiate a cuml.dask.cluster.KMeans kmeans_model and fit over the dataset: the resulting learned centroids $C$ are
 
 C_1  = [-4.2620926   8.063084    7.8262577  -5.355756   -6.0266967   1.7576957 ]
 

@@ -61,13 +61,9 @@ c_16 =  -20.891
 
 The other true coefficients being zero.
 
-Moreover, suppose that the true bias is one, that is b = 1.0
+Moreover, suppose that the true bias is one, that is $b$ = 1.0
  
-Then, we instantiate a cuml.dask.linear_model.LinearRegression `lr` and fit over the dataset:
-
-`lr.fit(X, y)`
-
-The resulting learned coefficients C are
+Then, we instantiate a cuml.dask.linear_model.LinearRegression `lr` and fit over the dataset, the resulting learned coefficients $C$ are
 
 
 C_1  =   -3.029
