@@ -120,22 +120,9 @@ def main():
         "fare_amount": "float32",
     }
     # We read the csv files into a dask_cudf for 2014
-    df_2014 = dask_cudf.read_csv(base_path+'2014/yellow_*.csv', dtype=col_dtype,)
+    taxi_df = dask_cudf.read_csv(base_path+'2014/yellow_*.csv', dtype=col_dtype,)
     # and we clean the data using the map_partitions
-    df_2014 = df_2014.map_partitions(clean, must_haves, meta=must_haves)
-    # Similarly, we follow the same procedure also for 2015 data
-    df_2015 = dask_cudf.read_csv(base_path+'2015/yellow_*.csv')
-    df_2015 = df_2015.map_partitions(clean, must_haves, meta=must_haves)
-    # In 2016, only January - June CSVs have the columns we need.
-    # If we try to read base_path+2016/yellow_*.csv, Dask will not appreciate having differing schemas in the same DataFrame.
-    # Instead, we'll need to create a list of the valid months and read them independently.
-    months = [str(x).rjust(2, '0') for x in range(1, 7)]
-    valid_files = [base_path+'2016/yellow_tripdata_2016-'+month+'.csv' for month in months]
-    # Read and clean 2016 data
-    df_2016 = dask_cudf.read_csv(valid_files).map_partitions(clean, must_haves, meta=must_haves)
-    # Finally, we concatenate multiple DataFrames into one bigger one
-    taxi_df = dask_cudf.concat([df_2014, df_2015, df_2016], axis=0)
-    taxi_df = taxi_df.persist()
+    taxi_df = taxi_df.map_partitions(clean, must_haves, meta=must_haves)
     # Now, we need to filter out any non-sensical records and outliers.
     # Specifically, we will only select records where tripdistance < 500 miles.
     # Similarly, we need to check abnormal fare_amount values for some records.
@@ -179,7 +166,6 @@ def main():
     taxi_df = taxi_df.drop("pickup_datetime",  axis=1)
     taxi_df = taxi_df.drop("dropoff_datetime", axis=1)
     taxi_df = taxi_df.map_partitions(haversine_dist)
-    taxi_df = taxi_df.persist()
     # 3. Split Data
     # Now, we split into training and validation sets
     X = taxi_df.drop(["fare_amount"], axis=1).astype("float32") 
@@ -188,12 +174,12 @@ def main():
     workers = client.has_what().keys()
     X_train, X_test, y_train, y_test = dask_utils.persist_across_workers(client, [X_train, X_test, y_train, y_test], workers=workers)
     # 4. Create and fit a Random Forest Model
-    # Now, we create cuml.dask RandomForest Regressor
-    cu_dask_rf = RandomForestRegressor(ignore_empty_partitions=True)
+    # Now, we create cuml.dask RandomForest Regressor, use the flag ignore_empty_partitions=True
+    cu_dask_rf = # TODO
     # fit RF model over the train dataset
-    cu_dask_rf = cu_dask_rf.fit(X_train, y_train)
-    # 5. Predict on validation set
-    y_pred = cu_dask_rf.predict(X_test) # predict on validation set
+    cu_dask_rf = # TODO
+    # 5. Predict on test set
+    y_pred = # TODO
     # 6. Compute RMSE
     score = mean_squared_error(y_pred.compute().to_numpy(), y_test.compute().to_numpy())
     print("Workflow Complete - After Training - RMSE on test set: ", np.sqrt(score))

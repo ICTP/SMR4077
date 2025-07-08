@@ -8,7 +8,7 @@ import pickle
 from cuml.dask.datasets import make_blobs
 
 def main():
-    # Connect to a cluster through a Dask client, play with the flags
+    # Connect to a cluster through a Dask client
     os.environ["DASK_DISTRIBUTED__COMM__UCX__NVLINK"] = "True"
     os.environ["DASK_DISTRIBUTED__COMM__UCX__INFINIBAND"] = "True"
     os.environ["DASK_DISTRIBUTED__COMM__UCX__NET_DEVICES"] = "ib0"
@@ -23,9 +23,18 @@ def main():
     current_dir = os.environ.get('SLURM_SUBMIT_DIR')
     # Set up a LocalCUDACluster with 4 workers supposed to run on 4 GPUs in a single node
     # Experiment with the flags, for example enable ucx. What happens of we do not enable ucx?
-    cluster = # ??? 
-    # Define a client for the LocalCUDACluster
-    client = # ???
+    cluster = LocalCUDACluster(CUDA_VISIBLE_DEVICES=[0, 1, 2, 3],
+                               n_workers=4,
+                               threads_per_worker=8,
+                               protocol="ucx",
+                               interface="ib0",
+                               enable_tcp_over_ucx=True,
+                               enable_infiniband=True,
+                               enable_nvlink=True,
+                               enable_rdmacm=True,
+                               rmm_pool_size="50GB",)
+
+    client = Client(cluster)
     client.wait_for_workers(4)
     # print cluster and client info
     print("\ncluster:\n", cluster, flush=True)
@@ -38,26 +47,20 @@ def main():
     n_parts = 20
     n_clusters = 8
     # Get the dataset (X, y), together with the true centers of the blobs dataset
-    # Use the make_blobs (from cuml.dask.datasets), to create blobs with
-    # n_samples, n_features, n_parts, n_clusters defined above (you may specify the std like cluster_std=0.4, and specify random_state)
-    # Specify also the flag: return_centers=True
-    # Documentation is here: https://docs.rapids.ai/api/cuml/stable/api/
-    X, _, centers = # ???
-    # Wait for the result of array returned by make_blobs
-    # ???
+    X, _, centers = make_blobs(n_samples=n_samples, n_features=n_features, centers=n_clusters, cluster_std=0.4, 
+                               random_state=start_random_state, n_parts=n_parts, return_centers=True)
     print("\nX:\n", X, flush=True)
-    # Use the KMeans from cuml.dask.cluster with n_clusters defined above to define a kmeans_model
-    kmeans_model = # ???
+    # Define the KMeans model and fit over the data
+    # Use the KMeans from cuml.dask.cluster with n_clusters defined above 
+    kmeans_model = # TODO
     # Fit kmeans_model over the blobs data
-    # ???
-    # Then, we wait for the function fit
-    wait(kmeans_model._func_fit)
-    # Compute the score over the X dataset
-    score = # ???
+    # TODO
+    # Compute the score over the dataset, computes the inertia score for the trained KMeans centroids.
+    score = # TODO
     print(f"\nScore: {score}\n", flush=True)
     # The distributed estimator wrappers inside of the cuml.dask are not intended to be pickled directly. 
     # The Dask cuML estimators provide a function get_combined_model(), which returns the trained single-GPU model for pickling. 
-    single_gpu_model = # ??? 
+    single_gpu_model = #TODO
     # Save the model to file
     pickle.dump(single_gpu_model,  open(current_dir + "/kmeans_model.pkl", "wb"))
     # Load the model from file
@@ -70,4 +73,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -60,31 +60,26 @@ def main():
     n_parts = 32
     # Get the blobs dataset X
     X, _ = make_blobs(n_samples=n_rows, n_features=n_cols, centers=1, n_parts=n_parts, cluster_std=0.01, random_state=10)
-    wait(X)
     print("\nX:\n", X, flush=True)
     # Define a diagonal matrix to scale the dataset    
     sig = cp.array([4.0, 0.1, 0.1, 0.4, 0.5, 0.2, 0.3, 0.4, 2.0, 0.6, 0.2, 0.3])
     S = da.from_array(cp.diag(sig), asarray=False)
-    wait(S)
     X = dask.array.matmul(X, S)
-    wait(X)
     # Now the dataset is not anymore an isotropic Gaussian blob as we have scaled the features according to S
     # Define the distributed PCA model
     cumlModel = PCA(n_components = 2, whiten=False)
     # Compute the PCA by fitting over the dataset and returning the reduced dimension new dataset
     XT = cumlModel.fit_transform(X)
     XT_persisted = XT.persist()
+    wait(XT_persisted)
     XT_persisted.compute_chunk_sizes() 
+    # Compute the chunk sizes for a Dask array. This is especially useful when the chunk sizes are unknown (e.g., when indexing one Dask array with another).
     print("\nXT_persisted:\n", XT_persisted, flush=True)
-    #XT_persisted_computed = XT_persisted.compute()
     # Convert inbto a dataframe, plot and save into file
-    df = dask.dataframe.from_dask_array(XT_persisted, columns=['x', 'y'])
-    res=hv.Scatter(df.compute(),)
+    df  = dask.dataframe.from_dask_array(XT_persisted, columns=['x', 'y'])
+    res = hv.Scatter(df.compute(),)
     res = res.opts(width=800, height=400)
     hv.save(res, current_dir+'/res.html', backend='bokeh')
-    #df_pandas= pd.DataFrame({'x': XT_persisted_computed[:, 0].get(), 'y': XT_persisted_computed[:, 1].get()}) 
-    #res2=df_pandas.hvplot.scatter(x='x', y='y', height=400, width=400)
-    #hv.save(res2, 'res2.html', backend='bokeh')
     client.close()
 
 if __name__ == "__main__":

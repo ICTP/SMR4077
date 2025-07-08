@@ -32,10 +32,7 @@ def main():
     os.environ["DASK_DISTRIBUTED__COMM__UCX__RDMACM"]="True"
     os.environ["UCX_MEMTYPE_REG_WHOLE_ALLOC_TYPES"]="cuda"
     os.environ["UCX_MEMTYPE_CACHE"]="n"
-    # Set up a LocalCUDACluster with 4 workers supposed to run on 4 GPUs in a single node
-    # Experiment with the flags, for example enable ucx. What happens of we do not enable ucx?
     cluster = # ???
-    # Define a client for the LocalCUDACluster
     client = # ???
     client.wait_for_workers(4)
     # print cluster and client info
@@ -44,6 +41,7 @@ def main():
     # Get the number of workers
     n_workers = len(client.scheduler_info()["workers"].keys())
     assert n_workers == 4
+    
     # Set up the number of samples
     MAX_SAMPLES_PER_WORKER = 80000000
     n_samples = 320000000
@@ -58,22 +56,21 @@ def main():
     bias = 1.0
     # Get the dataset (X, y), together with the true coefficient of the regression dataset (coef) 
     X, y, coef = generate_dist_dataset(client, n_samples, n_features, n_informative, n_targets, n_parts, bias)
-    # Now, wait for the dataset arrays to generated
-    # ???
     print("\nX:\n", X, flush=True)
     print("\ny:\n", y, flush=True)
-    # Define a Linear Regression model, since we have a bias, you may want to use the flags fit_intercept=True, normalize=False 
-    lr = # ???
+    # Define a Linear Regression model, see https://docs.rapids.ai/api/cuml/stable/api/ and use the options fit_intercept=True, normalize=False
+    lr= # TODO
     # Fit the model over the data
-    # ???
-    # Get the learned coefficient and bias, check the documentation here: https://docs.rapids.ai/api/cuml/stable/api/ 
-    lrcoef= # ??? 
-    lrbias= # ???
-    # Now, we check the result and see if the coefficients and the bias that we have learned are the same as the one that generated the dataset
+    # TODO
+    # Get the learned coefficient and bias, look at the documentation https://docs.rapids.ai/api/cuml/stable/api/
+    lrcoef= # TODO
+    lrbias= # TODO
+
     print("\nThe original coefficients:\n", coef.compute(), flush=True)
     print("\nThe original bias:\n", bias, flush=True)
     print("\nThe learnt coefficients:\n", lrcoef, flush=True)
     print("\nThe learnt bias:\n", lrbias, flush=True)
+
     client.close()
 
 
