@@ -13,7 +13,7 @@ symmetrix=$base/symmetrix
 
 if [[ ! -d $lammps ]]; then
   pushd $base
-  git clone -b develop https://github.com/lammps/lammps
+  git clone -b release https://github.com/lammps/lammps
   popd
 fi
 
