@@ -49,7 +49,7 @@ void set_displacement(int* displacement,const int* recvcount,int size) {
 }
 
 
-void save_hdf(int dimension,int image_id,int nloc,MPI_Comm comm,double* matrix) ;
+void save_hdf(size_t dimension,int image_id,size_t nloc,MPI_Comm comm,double* matrix) ;
 
 // save matrix to  .dat file in order to render with gnuplot
 void save_gnuplot( double *M, size_t dim );
@@ -140,7 +140,7 @@ int main(int argc, char* argv[]){
     }
 
   // Start algorithm
-  int width=(dimension+2);
+  size_t width=(dimension+2);
   int image=0;
 
 #pragma acc enter data copyin(matrix[:(dimension+2)*(nloc+2)],matrix_new[:(dimension+2)*(nloc+2)])
@@ -169,8 +169,8 @@ time=seconds();
 #pragma acc  data present(matrix[:(dimension+2)*(nloc+2)],matrix_new[:(dimension+2)*(nloc+2)]) 
  {
   #pragma acc parallel loop collapse(2)
-   for(int i = 1 ; i <= nloc; ++i )
-     for(int j = 1; j <= dimension; ++j )
+   for(size_t i = 1 ; i <= nloc; ++i )
+     for(size_t j = 1; j <= dimension; ++j )
        matrix_new[ ( i * ( dimension + 2 ) ) + j ] = ( 0.25 ) * 
 	 ( matrix[ ( ( i - 1 ) * ( dimension + 2 ) ) + j ] + 
 	   matrix[ ( i * ( dimension + 2 ) ) + ( j + 1 ) ] + 	  
@@ -197,7 +197,8 @@ time=seconds();
 
 
 #ifdef HDF5
- if((it % 100)==0) {
+ if((it % 5000)==0) {
+#pragma acc update host (matrix[ :(dimension+2)*(nloc+2) ])
    image++;
    save_hdf(dimension,image,nloc,MPI_COMM_WORLD,matrix) ;
  }
@@ -249,8 +250,9 @@ time=seconds();
 }
 
 #ifdef HDF5
-void save_hdf(int dimension,int image_id,int nloc,MPI_Comm comm,double* matrix) {
-  herr_t	status;
+void save_hdf(size_t dimension,int image_id,size_t nloc,MPI_Comm comm,double* matrix) {
+
+  herr_t status;
   int rank;
   int size;
   MPI_Comm_rank(comm,&rank);
@@ -279,48 +281,48 @@ void save_hdf(int dimension,int image_id,int nloc,MPI_Comm comm,double* matrix) 
   dimsf[1] = dimension+2; //horiziontal
   filespace = H5Screate_simple(RANK, dimsf, NULL); 
   
-    /*
-     * Create the dataset with default properties and close filespace.
-     */
-    dset_id = H5Dcreate(file_id, DATASETNAME, H5T_NATIVE_DOUBLE, filespace,
-                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-    H5Sclose(filespace);
-    /* 
-     * Each process defines dataset in memory and writes it to the hyperslab
-     * in the file.
-     */
-    hsize_t	count[2];
-    count[0] =nloc; //vertical size
-    count[1] =dimension+2; //horizontal size
-    hsize_t offset_file[2];
-
-    offset_file[0]=0;
-    for(int i=0;i<rank;++i)
-      offset_file[0]+= calculate_nloc(dimension,size,i);
-    offset_file[1] = 0; //horizontal offset
-    //printf("\nOffset rank %d, offset %d, nloc %d\n",rank,offset_file[0], nloc);
-    memspace = H5Screate_simple(RANK, count, NULL);
-
-    /*
-     * Select hyperslab in the file.
-     */
-    filespace = H5Dget_space(dset_id);
-    H5Sselect_hyperslab(filespace, H5S_SELECT_SET, offset_file, NULL, count, NULL);
-    /*
-     * Create property list for collective dataset write.
-     */
-    plist_id = H5Pcreate(H5P_DATASET_XFER);
-    H5Pset_dxpl_mpio(plist_id, H5FD_MPIO_COLLECTIVE);
-    status = H5Dwrite(dset_id, H5T_NATIVE_DOUBLE, memspace, filespace,
-                      plist_id, matrix);
-    /*
-     * Close/release resources.
-     */
-    H5Dclose(dset_id);
-    H5Sclose(filespace);
-    H5Sclose(memspace);
-    H5Pclose(plist_id);
-    H5Fclose(file_id);
+  /*
+   * Create the dataset with default properties and close filespace.
+   */
+  dset_id = H5Dcreate(file_id, DATASETNAME, H5T_NATIVE_DOUBLE, filespace,
+		      H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+  H5Sclose(filespace);
+  /* 
+   * Each process defines dataset in memory and writes it to the hyperslab
+   * in the file.
+   */
+  hsize_t	count[2];
+  count[0] =nloc; //vertical size
+  count[1] =dimension+2; //horizontal size
+  hsize_t offset_file[2];
+  
+  offset_file[0]=0;
+  for(int i=0;i<rank;++i)
+    offset_file[0]+= calculate_nloc(dimension,size,i);
+  offset_file[1] = 0; //horizontal offset
+  //printf("\nOffset rank %d, offset %d, nloc %d\n",rank,offset_file[0], nloc);
+  memspace = H5Screate_simple(RANK, count, NULL);
+  
+  /*
+   * Select hyperslab in the file.
+   */
+  filespace = H5Dget_space(dset_id);
+  H5Sselect_hyperslab(filespace, H5S_SELECT_SET, offset_file, NULL, count, NULL);
+  /*
+   * Create property list for collective dataset write.
+   */
+  plist_id = H5Pcreate(H5P_DATASET_XFER);
+  H5Pset_dxpl_mpio(plist_id, H5FD_MPIO_COLLECTIVE);
+  status = H5Dwrite(dset_id, H5T_NATIVE_DOUBLE, memspace, filespace,
+		    plist_id, matrix);
+  /*
+   * Close/release resources.
+   */
+  H5Dclose(dset_id);
+  H5Sclose(filespace);
+  H5Sclose(memspace);
+  H5Pclose(plist_id);
+  H5Fclose(file_id);
 }
 #endif
 
