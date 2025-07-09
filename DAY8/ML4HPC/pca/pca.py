@@ -70,13 +70,11 @@ def main():
     cumlModel = PCA(n_components = 2, whiten=False)
     # Compute the PCA by fitting over the dataset and returning the reduced dimension new dataset
     XT = cumlModel.fit_transform(X)
-    XT_persisted = XT.persist()
-    wait(XT_persisted)
-    XT_persisted.compute_chunk_sizes() 
+    XT.compute_chunk_sizes() 
     # Compute the chunk sizes for a Dask array. This is especially useful when the chunk sizes are unknown (e.g., when indexing one Dask array with another).
-    print("\nXT_persisted:\n", XT_persisted, flush=True)
+    print("\nXT:\n", XT, flush=True)
     # Convert inbto a dataframe, plot and save into file
-    df  = dask.dataframe.from_dask_array(XT_persisted, columns=['x', 'y'])
+    df  = dask.dataframe.from_dask_array(XT, columns=['x', 'y'])
     res = hv.Scatter(df.compute(),)
     res = res.opts(width=800, height=400)
     hv.save(res, current_dir+'/res.html', backend='bokeh')
